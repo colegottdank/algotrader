@@ -1,8 +1,5 @@
 from __future__ import (absolute_import, division, print_function,
                         unicode_literals)
-import datetime  # For datetime objects
-import os.path  # To manage paths
-import sys  # To find out the script name (in argv[0])
 import backtrader.feeds as btfeeds
 import backtrader as bt
 from DataGrabber import assetsToDownload
@@ -99,6 +96,7 @@ class TestStrategy(bt.Strategy):
 if __name__ == '__main__':
     cerebro = bt.Cerebro()
     cerebro.addstrategy(TestStrategy)
+
     print('Starting Portfolio Value: %.2f' % cerebro.broker.getvalue())
 
     for symbol in assetsToDownload:
@@ -116,9 +114,9 @@ if __name__ == '__main__':
         )
 
         cerebro.adddata(data)
-        cerebro.broker.setcash(100000.0)
-        cerebro.broker.setcommission(commission=0.001)
-        cerebro.run()
-        cerebro.plot()
+    cerebro.broker.setcash(100000.0)
+    cerebro.broker.setcommission(commission=0.001)
+    cerebro.run()
+    cerebro.plot()
 
     print('Final Portfolio Value: %.2f' % cerebro.broker.getvalue())
