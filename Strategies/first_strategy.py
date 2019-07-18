@@ -1,6 +1,6 @@
 import backtrader.feeds as btfeeds
 import backtrader as bt
-from DataGrabber import assetsToDownload
+from DataGrabber import assets
 
 
 class JoesStrat(bt.Strategy):
