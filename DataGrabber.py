@@ -1,31 +1,38 @@
 import alpaca_trade_api as tradeapi
+from datetime import datetime
+import time
+from polygon_interface import *
 from api import *
-import csv
 
 api = tradeapi.REST(get_api_key(), get_secret_key())
+testApi = Polygon(get_api_key())
 account = api.get_account()
 storageLocation = "././Data/"
-fromDate = '2008-1-1'
-toDate = ''
+trainingFromDate = '2017-07-20'
+trainingToDate = '2019-07-20'
+testFromDate = '2015-07-20'
+testToDate = '2017-07-20'
 # barTimeframe = "15Min"  # 1Min, 5Min, 15Min, 1H, 1D
-assets = ["GWPH", 'AAPL']
+assets = ['AAPL']
 
 
-def get_data():
+def get_training_data():
     for symbol in assets:
-        data_file = open(storageLocation + '{0}.csv'.format(symbol), 'w')
-        data_file.write("day,open,high,low,close,volume\n")
+        data_file = open(storageLocation + '{0}_Training.csv'.format(symbol), 'w')
+        data_file.write("date,open,high,low,close,volume\n")
 
-        returned_data = api.polygon.historic_agg("day", symbol, _from=fromDate)
+        #returned_data = api.get_barset(symbol, '1D', limit=1000)
+        returned_data = api.polygon.historic_agg_v2(symbol, 1, 'day', trainingFromDate, trainingToDate)
 
         # Reads, formats and stores the new bars
-        for day in returned_data:
-            ret_day = str(day.day).split(" ", 1)[0]
-            ret_open = str(day.open)
-            ret_high = str(day.high)
-            ret_low = str(day.low)
-            ret_close = str(day.close)
-            ret_volume = str(day.volume)
+        for bar in returned_data:
+            x = datetime.utcfromtimestamp(bar.t/1000)
+            ret_day = x.strftime("%Y-%m-%d %H:%M")
+            ret_open = str(bar.o)
+            ret_high = str(bar.h)
+            ret_low = str(bar.l)
+            ret_close = str(bar.c)
+            ret_volume = str(bar.v)
 
             # Writes formatted line to CSV file
             data_file.write(ret_day + "," + ret_open + "," + ret_high + "," + ret_low + "," + ret_close + "," + ret_volume + "\n")
@@ -33,11 +40,34 @@ def get_data():
         data_file.close()
 
 
-def clean_data():
+def get_test_data():
     for symbol in assets:
-        for row in 
+        data_file = open(storageLocation + '{0}_Test.csv'.format(symbol), 'w')
+        data_file.write("date,open,high,low,close,volume\n")
 
+        #returned_data = api.get_barset(symbol, '1D', limit=1000)
+        returned_data = api.polygon.historic_agg_v2(symbol, 1, 'day', testFromDate, testToDate)
+
+        # Reads, formats and stores the new bars
+        for bar in returned_data:
+            x = datetime.utcfromtimestamp(bar.t/1000)
+            ret_day = x.strftime("%Y-%m-%d %H:%M")
+            ret_open = str(bar.o)
+            ret_high = str(bar.h)
+            ret_low = str(bar.l)
+            ret_close = str(bar.c)
+            ret_volume = str(bar.v)
+
+            # Writes formatted line to CSV file
+            data_file.write(ret_day + "," + ret_open + "," + ret_high + "," + ret_low + "," + ret_close + "," + ret_volume + "\n")
+
+        data_file.close()
+
+
+def test_polygon_api():
+    print(testApi.grouped_daily('2019-02-01'))
 
 
 if __name__ == '__main__':
-    get_data()
+    get_training_data()
+    get_test_data()

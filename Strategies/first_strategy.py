@@ -15,7 +15,6 @@ class JoesStrat(bt.Strategy):
             return
 
 
-
 if __name__ == '__main__':
     cerebro = bt.Cerebro()
     cerebro.addstrategy(JoesStrat)
