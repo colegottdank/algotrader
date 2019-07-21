@@ -18,7 +18,7 @@ assets = ['AAPL']
 
 def get_training_data():
     for symbol in assets:
-        data_file = open(storageLocation + '{0}_Training.csv'.format(symbol), 'w')
+        data_file = open(storageLocation + '{0}_Intraday_Training.csv'.format(symbol), 'w')
         data_file.write("date,open,high,low,close,volume\n")
 
         #returned_data = api.get_barset(symbol, '1D', limit=1000)
@@ -42,7 +42,7 @@ def get_training_data():
 
 def get_test_data():
     for symbol in assets:
-        data_file = open(storageLocation + '{0}_Test.csv'.format(symbol), 'w')
+        data_file = open(storageLocation + '{0}_Intraday_Test.csv'.format(symbol), 'w')
         data_file.write("date,open,high,low,close,volume\n")
 
         #returned_data = api.get_barset(symbol, '1D', limit=1000)
