@@ -4,7 +4,7 @@ from api import *
 
 class Polygon:
     def __init__(self, api_key, staging=False):
-        self._api_key = get_polygon_credentials(api_key)
+        self._api_key = get_api_key()
         self._api_key = api_key
         self._staging = staging
         self._session = requests.Session()

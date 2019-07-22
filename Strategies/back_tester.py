@@ -3,6 +3,8 @@ from __future__ import (absolute_import, division, print_function,
 import backtrader.feeds as btfeeds
 import backtrader as bt
 
+assets = ['AAPL', 'ABC', 'ACB', 'A', 'AA', 'AAC', 'AAN', 'AAP', 'AAT']
+
 
 class TestStrategy(bt.Strategy):
 
@@ -98,9 +100,10 @@ if __name__ == '__main__':
 
     print('Starting Portfolio Value: %.2f' % cerebro.broker.getvalue())
 
-    for symbol in assetsToDownload:
+    for symbol in assets:
+        path = symbol + "_Intraday_Training"
         data = btfeeds.GenericCSVData(
-            dataname='././Data/' + symbol + '.csv',
+            dataname='././Data/{}.csv'.format(path),
             nullvalue=0.0,
             dtformat=('%Y-%m-%d'),
             datetime=0,
@@ -113,6 +116,7 @@ if __name__ == '__main__':
         )
 
         cerebro.adddata(data)
+
     cerebro.broker.setcash(100000.0)
     cerebro.broker.setcommission(commission=0.001)
     cerebro.run()

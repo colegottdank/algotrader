@@ -7,7 +7,7 @@ class JoesStrat(bt.Strategy):
     def __init__(self):
         self.dataclose = self.data.close
         self.dataopen = self.data.open
-        self.sma = bt.indicators.SimpleMovingAverage(self.data[0], period=10)
+        self.roc = bt.indicators.RateOfChange(self.data[0], period=5)
 
     def next(self):
         if self.order or self.position:

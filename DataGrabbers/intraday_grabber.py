@@ -1,19 +1,19 @@
 import alpaca_trade_api as tradeapi
 from datetime import datetime
-import time
 from polygon_interface import *
 from api import *
 
 api = tradeapi.REST(get_api_key(), get_secret_key())
 testApi = Polygon(get_api_key())
 account = api.get_account()
-storageLocation = "././Data/"
+
+storageLocation = ".././Data/"
 trainingFromDate = '2017-07-20'
 trainingToDate = '2019-07-20'
 testFromDate = '2015-07-20'
 testToDate = '2017-07-20'
-# barTimeframe = "15Min"  # 1Min, 5Min, 15Min, 1H, 1D
-assets = ['AAPL']
+
+assets = ['AAPL', 'ABC', 'ACB', 'A', 'AA', 'AAC', 'AAN', 'AAP', 'AAT']
 
 
 def get_training_data():
@@ -21,13 +21,12 @@ def get_training_data():
         data_file = open(storageLocation + '{0}_Intraday_Training.csv'.format(symbol), 'w')
         data_file.write("date,open,high,low,close,volume\n")
 
-        #returned_data = api.get_barset(symbol, '1D', limit=1000)
         returned_data = api.polygon.historic_agg_v2(symbol, 1, 'day', trainingFromDate, trainingToDate)
 
         # Reads, formats and stores the new bars
         for bar in returned_data:
             x = datetime.utcfromtimestamp(bar.t/1000)
-            ret_day = x.strftime("%Y-%m-%d %H:%M")
+            ret_day = x.strftime("%Y-%m-%d %H:%M").split(" ")[0]
             ret_open = str(bar.o)
             ret_high = str(bar.h)
             ret_low = str(bar.l)
@@ -45,13 +44,12 @@ def get_test_data():
         data_file = open(storageLocation + '{0}_Intraday_Test.csv'.format(symbol), 'w')
         data_file.write("date,open,high,low,close,volume\n")
 
-        #returned_data = api.get_barset(symbol, '1D', limit=1000)
         returned_data = api.polygon.historic_agg_v2(symbol, 1, 'day', testFromDate, testToDate)
 
         # Reads, formats and stores the new bars
         for bar in returned_data:
             x = datetime.utcfromtimestamp(bar.t/1000)
-            ret_day = x.strftime("%Y-%m-%d %H:%M")
+            ret_day = x.strftime("%Y-%m-%d %H:%M").split(" ")[0]
             ret_open = str(bar.o)
             ret_high = str(bar.h)
             ret_low = str(bar.l)
