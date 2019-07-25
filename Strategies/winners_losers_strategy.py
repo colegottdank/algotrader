@@ -1,7 +1,7 @@
 import backtrader.feeds as btfeeds
 import backtrader as bt
 
-assets = ['AAPL', 'AA', 'A', 'AAC', 'AAN', 'AAP', 'AAT']
+assets = ['AAPL', 'AA', 'A', 'AAC', 'AAN', 'AAT']
 
 
 class WinnersLosersStrategy(bt.Strategy):
